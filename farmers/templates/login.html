@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/farmer_reg_back.jpg' %}"); /* Replace with your background image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: transparent; /* Dark overlay for readability */
+            padding: 20px;
+        }
+
+        .form-card {
+            background-color: transparent;
+            border-radius: 10px;
+            padding: 20px 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-card h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color:black;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #28a745;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            color: #fff;
+            background-color:green; /* Green color for button */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: transparent;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h1>Login</h1>
+            <form action="{% url 'farmer_login' %}" method="POST">
+                <!-- User Type -->
+                 
+                {% csrf_token %}
+                <input type="hidden" name="return_url" value="/farmers/">
+                {% if error%}
+                    <div class="alert alert-danger" role="alert"><div class="alert alert-danger" role="alert" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px;">
+                        {{error}}
+                    </div>
+                {% endif %}
+              
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email"  value="{{values.email}}" 
+                    class=" form-control-sm form-control" placeholder="Enter your email" required>
+                </div>
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password"  value="{{values.password }}" 
+                    class=" form-control-sm form-control"placeholder="Enter your password" required>
+                </div>
+                
+                
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+            <div class="form-footer">
+                <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

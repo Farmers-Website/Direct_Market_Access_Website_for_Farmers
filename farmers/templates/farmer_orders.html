@@ -1,0 +1,149 @@
+{% load custom_filter %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            background-image: url("{% static 'images/order.jpg' %}");
+            background-size: cover;
+        }
+
+        .container {
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: black;
+            margin: 20px 0;
+        }
+
+        /* Order History Table */
+        .order-table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: transparent;
+        }
+
+        .order-table th,
+        .order-table td {
+            border: 1px solid black;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .order-table th {
+            background-color: transparent;
+            color: black;
+        }
+
+        .order-table tr:nth-child(even) {
+            background-color: transparent;
+        }
+
+        .order-table tr:hover {
+            background-color: rgba(220, 220, 220, 0.8);
+        }
+
+        /* Customer Photo */
+        .customer-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-block;
+            margin: 20px 0;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Order History</h1>
+
+
+        <a href="{% url 'farmer_dashboard' id=farmer.id %}" class="back-button"><i class="fas fa-arrow-left"></i> Back
+            to Dashboard</a>
+
+        <!-- Order History Table -->
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>Customer Name</th>
+                    <th>Product Name</th>
+                    <th>Customer Contact</th>
+                    <th>Order Date</th>
+                    <th>Quantity Sold</th>
+                    <th>Price (₹)</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ order.customer.name }}</td>
+                    <td>{{ order.product.name }}</td>
+                    <td>{{ order.customer.phone }}</td>
+                    <td>{{ order.date }}</td>
+                    <td>{{ order.quantity}}kg</td>
+                    <td>{{ order.product.price }}</td>
+                    <td>{{ order.product.quantity|multiply:order.product.price|currency }}</td>
+                    <td>
+                        {% if order.status %}
+                        <small class="badge badge-success">Completed</small>
+                        {% else %}
+                        <small class="badge badge-warning">Pending</small>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not order.status %}
+                        <form action="{% url 'accept_order' id=order.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Accept Order</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10" style="text-align: center;">No orders found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

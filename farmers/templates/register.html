@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/farmer_reg_back.jpg' %}"); /* Replace with your background image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: transparent; /* Dark overlay for readability */
+            padding: 20px;
+        }
+
+        .form-card {
+            background-color: transparent;
+            border-radius: 10px;
+            padding: 20px 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-card h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: black;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: transparent;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            color: white;
+            background-color: transparent; /* Contrasting red-orange background */
+            border: 2px solid black; /* Darker border for contrast */
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: transparent; /* Lighter red-orange on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .error {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+    <!-- <script>
+        function validatePasswords() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const messageBox = document.getElementById('message-box');
+            
+            if (password !== confirmPassword) {
+                messageBox.className = 'message error';
+                messageBox.textContent = 'Passwords do not match! Please re-enter.';
+                messageBox.style.display = 'block';
+                return false;
+            } else {
+                messageBox.className = 'message success';
+                messageBox.textContent = 'Registration successful! Redirecting to login...';
+                messageBox.style.display = 'block';
+                
+                setTimeout(function() {
+                    window.location.href = 'login.html';  // Redirect to login page after 2 seconds
+                }, 2000);
+                return false; // Prevent form submission since the page will redirect
+            }
+        }
+    </script> -->
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h1>Farmer Registration</h1>
+            <form action="{% url 'register' %}" method="POST" >
+                {% csrf_token %}
+
+                {% if error%}
+                <div class="alert alert-danger" role="alert">
+                    {{error}}
+                </div>
+                {% endif %}
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" 
+                    value="{{values.name}}" class="form-control form-control-sm" placeholder="Enter your name" required>
+                </div>
+                <!-- Email ID -->
+                <div class="form-group">
+                    <label for="email">Email ID</label>
+                    <input type="email" id="email" name="email"  value="{{values.email}}" class="form-control form-control-sm" placeholder="Enter your email ID" required>
+                </div>
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password"  value="{{values.password}}" class="form-control form-control-sm" placeholder="Enter a strong password" required>
+                </div>
+                <!-- Re-enter Password -->
+                <div class="form-group">
+                    <label for="confirm-password">Re-enter Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password"  value="{{values.password}}" class="form-control form-control-sm" placeholder="Re-enter your password" required>
+                </div>
+                <!-- Contact Number -->
+                <div class="form-group">
+                    <label for="phone">Contact Number</label>
+                    <input type="tel" id="contact" name="phone"  value="{{values.phone}}" class="form-control form-control-sm" placeholder="Enter your contact number" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Location</label>
+                    <input type="text" id="location" name="location"  value="{{values.location}}" class="form-control form-control-sm" placeholder="Enter your location" >
+                </div>
+                <!-- image -->
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <input type="file" id="image" name="image" 
+                    value="{{values.image.url}}" accept="image/*"  class="form-control form-control-sm" placeholder="Enter your name" required>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Register</button>
+            </form>
+            <div class="form-footer">
+                <p>Already have an account? <a href="{% url 'farmer_login' %}">Login here</a></p>
+            </div>
+            <!-- Message box for displaying success/error -->
+            <div id="message-box" class="message"></div>
+        </div>
+    </div>
+</body>
+</html>

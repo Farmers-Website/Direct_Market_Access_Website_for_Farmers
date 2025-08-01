@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's Friend</title>
+    <style>
+        /* Reset and Global Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'images/signupbackground.jpg' %}");
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Main Heading */
+        h1 {
+            font-size: 3rem;
+            color: #2d572c;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        /* Role Cards Container */
+        .role-container {
+            display: flex;
+            gap: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        /* Role Card */
+        .role-card {
+            background: white;
+            width: 280px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .role-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .role-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .role-card .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .role-card h2 {
+            font-size: 1.5rem;
+            color: #2d572c;
+            margin-bottom: 10px;
+        }
+
+        .role-card p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .role-card a {
+            text-decoration: none;
+            background: #2d572c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+            display: inline-block;
+        }
+
+        .role-card a:hover {
+            background: #1e3f1d;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Heading -->
+    <h1>Farmer's Friend</h1>
+    <p class="subtitle">Bridging the gap between farmers and customers.</p>
+
+    <!-- Role Cards -->
+    <div class="role-container">
+        <!-- Farmer Card -->
+        <div class="role-card">
+            <img src="{% static 'images/farmer.jpg' %}" alt="Farmer">
+            <div class="content">
+                <h2>Farmer</h2>
+                <p>Manage your products and connect directly with customers.</p>
+                <a href="{% url 'farmer_login' %}">Get Started</a>
+            </div>
+        </div>
+
+        <div class="role-card">
+            <img src="{% static 'images/customerhomepage.jpg' %}" alt="Customer">
+            <div class="content">
+                <h2>Customer</h2>
+                <p>Explore fresh products directly from farmers near you.</p>
+                <a href="{% url 'customer_login' %}">Start Shopping</a>
+            </div>
+        </div>
+    </div>
+
+
+    <footer>
+        &copy; 2024 Farmer's Friend. All Rights Reserved.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,158 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{%static 'images/update_product.jpg'%}"); /* Replace with your background image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: transparent; /* Dark overlay for readability */
+            padding: 20px;
+        }
+
+        .form-card {
+            background-color: transparent;
+            border-radius: 10px;
+            padding: 20px 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-card h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+           
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: transparent;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            color: white;
+            background-color: #4CAF50; /* Green background for submit button */
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049; /* Lighter green on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h1>Update  Product</h1>
+            <form action="{% url 'update_product' product_id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Product Image -->
+                <div class="form-group">
+                    <label for="image">Product Image</label>
+                    <input type="file" id="image" name="image"><br>
+                </div>
+                <!-- Product Name -->
+                <div class="form-group">
+                    <label for="name">Product Name</label>
+                    <input type="text" id="name" name="name" value="{{ product.name }}" required>
+                </div>
+                 <!-- Product quantity-->
+                 <div class="form-group">
+                    <label for="quantity">Product Quantity</label>
+                    <input type="number" id="quantity" name="quantity" value="{{ product.quantity }}" required>
+                </div>
+                <!-- Product Price -->
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" id="price" name="price" value="{{ product.price }}" required>
+                </div>
+                <!-- Product Category -->
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="fruits">Fruits</option>
+                        <option value="vegetables">Vegetables</option>
+                        <option value="leafy-vegetables">Leafy Vegetables</option>
+                    </select>
+                </div>
+                <!-- Product Description -->
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" value="{{ product.description }}" required>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn"> Update Product</button>
+            </form>
+            <div class="form-footer">
+                <p><a href="{% url 'view_product' product_id %}">View Product</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

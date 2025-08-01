@@ -1,0 +1,192 @@
+
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Profile container */
+        .profile-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .profile-header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Body */
+        .profile-body {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        /* Sidebar */
+        .profile-sidebar {
+            flex: 1;
+            max-width: 300px;
+            text-align: center;
+            border-right: 1px solid #eaeaea;
+            padding: 20px;
+        }
+
+        .profile-sidebar .profile-pic img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 3px solid #007bff;
+        }
+
+        /* Form */
+        .profile-form {
+            flex: 2;
+            padding: 20px;
+        }
+
+        .profile-form h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .profile-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .profile-form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-form input,
+        .profile-form select,
+        .profile-form textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .profile-form textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .profile-form .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .profile-form .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .profile-body {
+                flex-direction: column;
+            }
+            .profile-sidebar {
+                border-right: none;
+                border-bottom: 1px solid #eaeaea;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Welcome, {{ customer.name }}</h1>
+        </div>
+
+        <div class="profile-body">
+            <div class="profile-sidebar">
+                <div class="profile-pic">
+                    {% if customer.profile_image %}
+                        <img src="{{ customer.profile_image.url }}" alt="Profile Picture">
+                    {% else %}
+                        <img src="{% static 'images/customer.jpg' %}" alt="Default Profile Picture">
+                    {% endif %}
+                </div>
+                <h2>{{ customer.name }}</h2>
+                <p>Email: {{ customer.email }}</p>
+                <p>Phone: {{ customer.phone }}</p>
+            </div>
+
+            <div class="profile-form">
+                <h2>Edit Your Profile</h2>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" name="name" value="{{ customer.name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone:</label>
+                        <input type="text" name="phone" value="{{ customer.phone }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" value="{{ customer.email }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <textarea name="address">{{ customer.address }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Date of Birth:</label>
+                        <input type="date" name="dob" value="{{ customer.dob|date:'Y-m-d' }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Bio:</label>
+                        <textarea name="bio">{{ customer.bio }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <select name="gender">
+                            <option value="Male" {% if customer.gender == "Male" %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if customer.gender == "Female" %}selected{% endif %}>Female</option>
+                            <option value="Other" {% if customer.gender == "Other" %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile_image">Profile Picture:</label>
+                        <input type="file" name="profile_image">
+                    </div>
+                    <button type="submit" class="btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

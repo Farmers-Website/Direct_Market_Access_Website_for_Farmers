@@ -1,0 +1,85 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Feedback</title>
+    <style>
+        /* General Page Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            background-image: url("{% static 'images/product_feedback.jpg' %}");
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .feedback {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .feedback:last-child {
+            border-bottom: none;
+        }
+        .customer-name {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #555;
+        }
+        .rating {
+            display: inline-block;
+            background-color: #ffe680;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+        .comment {
+            margin: 10px 0;
+            color: #666;
+            line-height: 1.5;
+        }
+        .timestamp {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .no-feedback {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feedback for {{ product.name }}</h1>
+
+        {% if feedbacks %}
+            {% for feedback in feedbacks %}
+            <div class="feedback">
+                <span class="customer-name">{{ feedback.customer.name }}</span>
+                <span class="rating">{{ feedback.rating }}/5</span>
+                <p class="comment">{{ feedback.comment }}</p>
+                <p class="timestamp">Submitted on: {{ feedback.created_at|date:"F j, Y, g:i a" }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-feedback">No feedback available for this product yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

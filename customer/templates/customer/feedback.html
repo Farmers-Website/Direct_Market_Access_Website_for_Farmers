@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .stars i {
+            font-size: 30px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .stars i:hover,
+        .stars i.selected {
+            color: orange;
+        }
+
+        .feedback-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            resize: none;
+            height: 80px;
+        }
+
+        .submit-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feedback</h1>
+        <p>Rate your experience with us:</p>
+        <div class="stars" id="starRating">
+            <i class="fas fa-star" data-value="1"></i>
+            <i class="fas fa-star" data-value="2"></i>
+            <i class="fas fa-star" data-value="3"></i>
+            <i class="fas fa-star" data-value="4"></i>
+            <i class="fas fa-star" data-value="5"></i>
+        </div>
+        <textarea 
+            class="feedback-textarea" 
+            placeholder="Write your feedback (max 200 characters)..." 
+            id="feedbackText"></textarea>
+        <button class="submit-button" onclick="submitFeedback()">Submit Feedback</button>
+    </div>
+
+    <script>
+        const stars = document.querySelectorAll('.stars i');
+        let selectedRating = 0;
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = star.getAttribute('data-value');
+                stars.forEach(s => s.classList.remove('selected'));
+                for (let i = 0; i < selectedRating; i++) {
+                    stars[i].classList.add('selected');
+                }
+            });
+        });
+
+        async function submitFeedback() {
+            const feedbackText = document.getElementById('feedbackText').value.trim();
+
+            if (selectedRating === 0) {
+                alert('Please select a star rating.');
+                return;
+            }
+
+            if (feedbackText.length === 0 || feedbackText.length > 200) {
+                alert('Please write feedback (up to 200 characters).');
+                return;
+            }
+
+            const response = await fetch("{% url 'feedback' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    rating: selectedRating,
+                    message: feedbackText
+                })
+            });
+
+            if (response.ok) {
+                alert('Error submitting feedback. Please try again.');
+                
+                location.reload();
+            } else {
+                alert('Thank you for your feedback!');
+            }
+        }
+    </script>
+</body>
+</html>

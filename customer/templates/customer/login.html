@@ -1,0 +1,175 @@
+{% load static %}
+
+
+<script>
+    // Prevent navigating back to this page after logout
+    if (performance.navigation.type === 2) { // Back button detected
+        window.location.href = "/"; // Redirect to homepage or desired page
+    }
+</script>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/farmer_reg_back.jpg' %}");
+            /* Replace with your background image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: transparent;
+            /* Dark overlay for readability */
+            padding: 20px;
+        }
+
+        .form-card {
+            background-color: transparent;
+            border-radius: 10px;
+            padding: 20px 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-card h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: black;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #28a745;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            color: #fff;
+            background-color: green;
+            /* Green color for button */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: transparent;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            /* Centers the error message */
+            background-color: #17cb2f;
+            /* Light red background for better visibility */
+            border: 1px solid red;
+            /* Adds a border for distinction */
+            padding: 10px;
+            /* Adds some space inside the error box */
+            border-radius: 5px;
+            /* Rounds the corners */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h1>Login</h1>
+            <form action="{% url 'customer_login' %}" method="POST">
+                {% csrf_token %}
+                {% if error %}
+                <div class="error">
+                    <p>{{error}}</p>
+                </div>
+                {% endif %}
+
+                <!-- <div class="form-group">
+                    <label for="user-type">I am a</label>
+                    <select id="user-type" name="user_type" required>
+                        <option value="" disabled selected>Select...</option>
+                        <option value="farmer">Farmer</option>
+                        <option value="customer">Customer</option>
+                    </select>
+                </div> -->
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+            <div class="form-footer">
+                <p>Don't have an account? <a href="{% url 'customer_register' %}">Register here</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

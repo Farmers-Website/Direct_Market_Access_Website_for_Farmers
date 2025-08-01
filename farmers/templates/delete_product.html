@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Full viewport height */
+            background-image: url("{% static 'images/delete_product.jpg' %}");
+            background-size: cover; /* Make background image cover the whole screen */
+            background-repeat: no-repeat;
+            background-position: center; /* Center the background image */
+            color: black;
+            display: flex; /* Use flexbox to center content */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+    
+        .container {
+            max-width: 400px; /* Limit the width of the container */
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    
+        .btn-danger {
+            background-color: #ff4d4d;
+            color: white;
+        }
+    
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+    
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Delete Product</h1>
+        <p>Are you sure you want to delete the product <strong>{{ product.name }}</strong>?</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'view_product' product.id %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

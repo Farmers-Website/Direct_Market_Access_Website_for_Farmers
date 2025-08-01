@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/add_product.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: black;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: transparent; /* Dark overlay for readability */
+            padding: 20px;
+        }
+
+        .form-card {
+            background-color: transparent;
+            border-radius: 10px;
+            padding: 20px 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-card h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+           
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color:black;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: transparent;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            color:black;
+            background-color: #4CAF50; /* Green background for submit button */
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049; /* Lighter green on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h1><b>Add Product</b></h1>
+            {% if error %}
+                <p style="color: red;">{{ error }}</p>
+            {% endif %}
+            <form action="{% url 'add_product' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Product Image -->
+                            <div class="form-group">
+                                <label for="image"><b>Product Image</b></label>
+                                <input type="file" id="image" name="image" accept="image/*" required>
+                            </div>
+            
+
+                <!-- Product Name -->
+                <div class="form-group">
+                    <label for="name"><b>Product Name</b></label>
+                    <input type="text" id="name" name="name" placeholder="Enter product name" required>
+                </div>
+                <!-- Product quantity -->
+                <div class="form-group">
+                    <label for="quantity"><b>Product Quantity</b></label>
+                    <input type="number" id="quantity" name="quantity" placeholder="Enter product quantity" required>
+                </div>
+                <!-- Product Price -->
+                <div class="form-group">
+                    <label for="price"><b>Price</b></label>
+                    <input type="number" id="price" name="price" placeholder="Enter price" required>
+                </div>
+                <!-- Product Category -->
+                <div class="form-group">
+                    <label for="category"><b>Category</b></label>
+                    <select id="category" name="category" required>
+                        {% for category in categories %}
+                            <option value="{{ category.name }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Product Description -->
+                <div class="form-group">
+                    <label for="description"><b>Description</b></label>
+                    <input type="text" id="description" name="description" placeholder="Enter a short description" required>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn"><b>Add Product</b></button>
+            </form>
+            <div class="form-footer">
+                <p><a href="{% url 'farmer_dashboard' id=farmer_id %}">View Product List</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
